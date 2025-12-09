@@ -1,5 +1,6 @@
 package com.mortgage.service;
 
+import com.mortgage.exception.BadRequestException;
 import com.mortgage.model.InterestRate;
 import com.mortgage.model.MortgageCheckRequest;
 import com.mortgage.model.MortgageCheckResponse;
@@ -19,7 +20,9 @@ public class MortgageCheckService {
         this.interestRateService = interestRateService;
     }
 
-    public MortgageCheckResponse checkMortgage(MortgageCheckRequest request){
+    public MortgageCheckResponse checkMortgage(MortgageCheckRequest request) {
+
+        validateRequest(request);
 
         BigDecimal income = request.getSalaryIncome();
         BigDecimal loanValue = request.getLoanValue();
@@ -43,6 +46,13 @@ public class MortgageCheckService {
 
     private BigDecimal calculateMonthlyPayment(BigDecimal principal, BigDecimal monthlyInterestRate, int totalMonths) {
 
+        if (monthlyInterestRate.compareTo(BigDecimal.ZERO) == 0) {
+            if (totalMonths == 0) {
+                return BigDecimal.ZERO;
+            }
+            return principal.divide(BigDecimal.valueOf(totalMonths), RoundingMode.HALF_UP);
+        }
+
         MathContext mc = new MathContext(20, RoundingMode.HALF_UP);
 
         BigDecimal growthFactor = BigDecimal.ONE.add(monthlyInterestRate, mc);
@@ -57,6 +67,22 @@ public class MortgageCheckService {
 
         return principal.multiply(amortizationFactor, mc);
     }
+
+    private void validateRequest(MortgageCheckRequest request) {
+        if (request.getSalaryIncome().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new BadRequestException("Income cannot be zero or negative");
+        }
+        if (request.getLoanValue().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new BadRequestException("Loan value cannot be zero or negative");
+        }
+        if (request.getRealEstateValue().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new BadRequestException("Home value cannot be zero or negative");
+        }
+        if (request.getMatPeriod() <= 0) {
+            throw new BadRequestException("Maturity must be greater than zero");
+        }
+    }
+
 
 
 }
