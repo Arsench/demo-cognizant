@@ -4,23 +4,23 @@ import java.math.BigDecimal;
 
 public class MortgageCheckResponse {
 
-    boolean isFeasible;
-    BigDecimal monthlyCosts;
+    private boolean feasible;
+    private BigDecimal monthlyCosts;
 
-    public MortgageCheckResponse() {
+    private MortgageCheckResponse() {
     }
 
     public MortgageCheckResponse(boolean isFeasible, BigDecimal monthlyCosts) {
-        this.isFeasible = isFeasible;
+        this.feasible = isFeasible;
         this.monthlyCosts = monthlyCosts;
     }
 
     public boolean isFeasible() {
-        return isFeasible;
+        return feasible;
     }
 
     public void setFeasible(boolean feasible) {
-        isFeasible = feasible;
+        this.feasible = feasible;
     }
 
     public BigDecimal getMonthlyCosts() {

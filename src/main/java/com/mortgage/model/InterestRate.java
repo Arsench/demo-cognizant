@@ -6,9 +6,9 @@ import java.time.LocalDateTime;
 public class InterestRate {
 
 
-    int maturityPeriod;
-    BigDecimal interestRate;
-    LocalDateTime lastUpdate;
+    private int maturityPeriod;
+    private BigDecimal interestRate;
+    private LocalDateTime lastUpdate;
 
     private InterestRate() {
     }

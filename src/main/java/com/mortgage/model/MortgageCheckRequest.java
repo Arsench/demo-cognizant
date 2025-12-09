@@ -4,10 +4,10 @@ import java.math.BigDecimal;
 
 public class MortgageCheckRequest {
 
-    BigDecimal salaryIncome;
-    int matPeriod;
-    BigDecimal loanValue;
-    BigDecimal realEstateValue;
+    private BigDecimal salaryIncome;
+    private int matPeriod;
+    private BigDecimal loanValue;
+    private BigDecimal realEstateValue;
 
     private MortgageCheckRequest() {
     }

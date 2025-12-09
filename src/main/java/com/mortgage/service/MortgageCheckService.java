@@ -41,22 +41,22 @@ public class MortgageCheckService {
         return new MortgageCheckResponse(true, monthlyPayment);
     }
 
-    private BigDecimal calculateMonthlyPayment(BigDecimal loanValue, BigDecimal monthlyRate, int months) {
+    private BigDecimal calculateMonthlyPayment(BigDecimal principal, BigDecimal monthlyInterestRate, int totalMonths) {
 
-        // Precisión para cálculos financieros
         MathContext mc = new MathContext(20, RoundingMode.HALF_UP);
-        // 1 + r
-        BigDecimal onePlusRate = BigDecimal.ONE.add(monthlyRate, mc);
-        // (1 + r)^n
-        BigDecimal power = onePlusRate.pow(months, mc);
-        // (1 + r)^(-n)  →  1 / (1 + r)^n
-        BigDecimal inverse = BigDecimal.ONE.divide(power, mc);
-        // 1 - (1 + r)^(-n)
-        BigDecimal denominator = BigDecimal.ONE.subtract(inverse, mc);
-        // r / (1 - (1 + r)^(-n))
-        BigDecimal fraction = monthlyRate.divide(denominator, mc);
-        // Pago mensual = P × fraction
-        return loanValue.multiply(fraction, mc);
+
+        BigDecimal growthFactor = BigDecimal.ONE.add(monthlyInterestRate, mc);
+
+        BigDecimal growthFactorPower = growthFactor.pow(totalMonths, mc);
+
+        BigDecimal discountFactor = BigDecimal.ONE.divide(growthFactorPower, mc);
+
+        BigDecimal amortizationDenominator = BigDecimal.ONE.subtract(discountFactor, mc);
+
+        BigDecimal amortizationFactor = monthlyInterestRate.divide(amortizationDenominator, mc);
+
+        return principal.multiply(amortizationFactor, mc);
     }
+
 
 }

@@ -12,7 +12,7 @@ import java.util.Optional;
 public class InterestRateService {
 
 
-    private InterestRateRepository repository;
+    private final InterestRateRepository repository;
 
     public InterestRateService(InterestRateRepository repository) {
         this.repository = repository;
@@ -21,9 +21,9 @@ public class InterestRateService {
         return repository.findAll();
     }
 
-    public InterestRate getInterestRateForMaturity(int period) {
-        return repository.findByMaturityPeriod(period)
-                .orElseThrow(() -> new NotFoundException("No interest rate for maturity " + period));
+    public InterestRate getInterestRateForMaturity(int maturityPeriod) {
+        return repository.findByMaturityPeriod(maturityPeriod)
+                .orElseThrow(() -> new NotFoundException("No interest rate for maturity " + maturityPeriod));
     }
 
 }
