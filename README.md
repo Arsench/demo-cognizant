@@ -21,7 +21,7 @@ These values are created automatically on startup.
 ### 2. Check whether a mortgage is feasible  
 **POST `/api/mortgage-check`**
 
-The service receives something like:
+The service receives the following request:
 
 ```json
 {
@@ -63,9 +63,9 @@ payment = P × ( r / (1 - (1 + r)^(-n)) );
 ```
 Where:
 
-P = principal (loan amount)
-r = monthly interest rate (annualRate / 12)
-n = total number of months
+- P = principal (loan amount)
+- r = monthly interest rate (annualRate / 12)
+- n = total number of months
 The calculation method also supports the case of a 0% interest rate, even though none of the predefined interest rates use it. 
 In that scenario, the formula reduces to principal / months.
 This avoids division issues and matches real financial behavior.
