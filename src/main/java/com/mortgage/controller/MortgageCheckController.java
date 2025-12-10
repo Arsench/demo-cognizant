@@ -1,12 +1,11 @@
 package com.mortgage.controller;
 
 
+import com.mortgage.dto.request.MortgageCheckRequestDto;
+import com.mortgage.dto.response.MortgageCheckResponseDto;
 import com.mortgage.model.InterestRate;
-import com.mortgage.model.MortgageCheckRequest;
-import com.mortgage.model.MortgageCheckResponse;
 import com.mortgage.service.InterestRateService;
 import com.mortgage.service.MortgageCheckService;
-import org.apache.coyote.BadRequestException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,7 +28,7 @@ public class MortgageCheckController {
     }
 
     @PostMapping("/mortgage-check")
-    public MortgageCheckResponse check(@RequestBody MortgageCheckRequest request)  {
-        return mortgageCheckService.checkMortgage(request);
+    public MortgageCheckResponseDto check(@RequestBody MortgageCheckRequestDto requestDto)  {
+        return mortgageCheckService.checkMortgage(requestDto);
     }
 }

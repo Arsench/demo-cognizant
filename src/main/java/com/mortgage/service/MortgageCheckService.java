@@ -1,9 +1,9 @@
 package com.mortgage.service;
 
+import com.mortgage.dto.request.MortgageCheckRequestDto;
+import com.mortgage.dto.response.MortgageCheckResponseDto;
 import com.mortgage.exception.BadRequestException;
 import com.mortgage.model.InterestRate;
-import com.mortgage.model.MortgageCheckRequest;
-import com.mortgage.model.MortgageCheckResponse;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -20,28 +20,28 @@ public class MortgageCheckService {
         this.interestRateService = interestRateService;
     }
 
-    public MortgageCheckResponse checkMortgage(MortgageCheckRequest request) {
+    public MortgageCheckResponseDto checkMortgage(MortgageCheckRequestDto request) {
 
         validateRequest(request);
 
         BigDecimal income = request.getSalaryIncome();
         BigDecimal loanValue = request.getLoanValue();
         BigDecimal homeValue = request.getRealEstateValue();
-        int maturity = request.getMatPeriod();
+        int maturity = request.getMaturityPeriod();
 
         BigDecimal salaryValue = income.multiply(BigDecimal.valueOf(4));
         if (loanValue.compareTo(salaryValue) > 0) {
-            return new MortgageCheckResponse(false, BigDecimal.ZERO);
+            return new MortgageCheckResponseDto(false, BigDecimal.ZERO);
         }
         if (loanValue.compareTo(homeValue) > 0) {
-            return new MortgageCheckResponse(false, BigDecimal.ZERO);
+            return new MortgageCheckResponseDto(false, BigDecimal.ZERO);
         }
-        InterestRate rate =interestRateService.getInterestRateForMaturity(request.getMatPeriod());
+        InterestRate rate =interestRateService.getInterestRateForMaturity(request.getMaturityPeriod());
         BigDecimal monthlyRate = rate.getInterestRate()
                 .divide(BigDecimal.valueOf(12), RoundingMode.HALF_UP);
         int months = maturity * 12;
         BigDecimal monthlyPayment = calculateMonthlyPayment(loanValue, monthlyRate, months);
-        return new MortgageCheckResponse(true, monthlyPayment);
+        return new MortgageCheckResponseDto(true, monthlyPayment);
     }
 
     private BigDecimal calculateMonthlyPayment(BigDecimal principal, BigDecimal monthlyInterestRate, int totalMonths) {
@@ -68,7 +68,7 @@ public class MortgageCheckService {
         return principal.multiply(amortizationFactor, mc);
     }
 
-    private void validateRequest(MortgageCheckRequest request) {
+    private void validateRequest(MortgageCheckRequestDto request) {
         if (request.getSalaryIncome().compareTo(BigDecimal.ZERO) <= 0) {
             throw new BadRequestException("Income cannot be zero or negative");
         }
@@ -78,7 +78,7 @@ public class MortgageCheckService {
         if (request.getRealEstateValue().compareTo(BigDecimal.ZERO) <= 0) {
             throw new BadRequestException("Home value cannot be zero or negative");
         }
-        if (request.getMatPeriod() <= 0) {
+        if (request.getMaturityPeriod() <= 0) {
             throw new BadRequestException("Maturity must be greater than zero");
         }
     }
