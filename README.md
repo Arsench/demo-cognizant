@@ -93,11 +93,11 @@ Invalid input results in a custom BadRequestException, which returns a 400 error
 ### Code structure
 The project is organized into clear layers:
 
-Controller → handles HTTP requests
-Service → contains all business logic and validations
-Repository → provides access to the in-memory interest rates
-Model → request/response objects and interest rate model
-Exception → custom exceptions for error handling
+- Controller → handles HTTP requests
+- Service → contains all business logic and validations
+- Repository → provides access to the in-memory interest rates
+- Model / DTO → request/response objects and interest rate model
+- Exception → custom exceptions for error handling
 
 ### Running the tests
 There are several JUnit tests (using Mockito where needed) that validate:
