@@ -109,8 +109,8 @@ the amortization formula
 
 ### Technologies used
 
-Java 17
-Spring Boot (Web)
-JUnit 5
-Mockito
-BigDecimal for accurate financial calculations
+- Java 17  
+- Spring Boot (Web)  
+- JUnit 5  
+- Mockito  
+- BigDecimal for accurate financial calculations  
