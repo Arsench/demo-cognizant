@@ -56,9 +56,10 @@ the service returns:
 ### How the monthly payment is calculated
 The monthly mortgage payment is based on the standard amortization formula.
 Since I do not work regularly with financial formulas, I requested assistance from an LLM specifically for understanding the mathematical structure of the formula.
+
 Please NOTE: The code itself was written and adapted by me, but the formula explanation was assisted by the model due to the financial nature of the calculation.
 ```json
-payment = P × ( r / (1 - (1 + r)^(-n)) )
+payment = P × ( r / (1 - (1 + r)^(-n)) );
 ```
 Where:
 
